@@ -5,6 +5,8 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Threading;
+using NSelene;
+using static NSelene.Selene;
 
 namespace Example
 {
@@ -30,9 +32,20 @@ namespace Example
         public void Test1()
         {
             driver.Url = "https://www.google.ru/";
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.CssSelector("[name = 'q']")));
             driver.FindElement(By.CssSelector("[name = 'q']")).SendKeys("Selenium");
             //driver.FindElement(By.CssSelector("[class = 'FPdoLc lJ9FBc'] [name = 'btnK']")).Click();
-            driver.FindElement(By.CssSelector("[class = 'CqAVzb lJ9FBc'] [name = 'btnK']")).Click();
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.XPath("//div[5]/center/input[1]")));
+            driver.FindElement(By.XPath("//div[5]/center/input[1]")).Click();
+            Thread.Sleep(3000);
+        }
+
+        [Test]
+        public void Test2()
+        {
+            driver.Url = "https://www.google.ru/";
+            S("[name = 'q']", driver).Should(Be.Visible).SetValue("Selenium");
+            S("//div[5]/center/input[1]", driver).Should(Be.Visible).Click();
             Thread.Sleep(3000);
         }
 
